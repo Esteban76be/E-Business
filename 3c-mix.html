@@ -1,0 +1,180 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaGlow - Análisis Estratégico y Marketing Mix</title>
+    <meta name="description" content="Explora el análisis 3C y el Marketing Mix de VitaGlow para una estrategia de belleza sostenible.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">VitaGlow</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="strategy.html">Strategy</a></li>
+                    <li><a href="seo-sem.html">SEO & SEM</a></li>
+                    <li><a href="ux-cx.html">UX & CX</a></li>
+                    <li><a href="3c-mix.html">3C & Mix</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="content-section fade-in-section" id="3c-mix">
+            <h2 class="section-title">Strategic Analysis and Marketing Mix</h2>
+            <div class="section-description">
+               <div class="content">
+                <h2>3C Analysis: Understanding Our Ecosystem</h2>
+                <div class="analysis-section">
+                    <h3>Company</h3>
+                    <p>At VitaGlow, our commitment to sustainable beauty drives innovation. We leverage cutting-edge technology and eco-friendly practices to create high-quality, natural skincare products that align with our mission to promote conscious beauty.</p>
+                </div>
+                <div class="analysis-section">
+                    <h3>Competitors</h3>
+                    <p>We continuously analyze the skincare market to identify trends and gaps. By understanding our competitors' strengths and weaknesses, we position VitaGlow to offer unique, high-value products that stand out in a crowded market.</p>
+                </div>
+                <div class="analysis-section">
+                    <h3>Customers</h3>
+                    <p>Our customers are at the heart of everything we do. Through detailed market research, we understand their needs, preferences, and values, allowing us to craft products and experiences that resonate deeply with their desire for sustainability and efficacy.</p>
+                </div>
+
+                <h2>Marketing Mix: The 4Ps of VitaGlow</h2>
+                <div class="marketing-mix">
+                    <div class="mix-item">
+                        <h3>Product</h3>
+                        <p>Our products, like the Moisturizing Facial Serum, combine natural ingredients such as hyaluronic acid and organic botanical extracts with advanced formulations to deliver effective, eco-conscious skincare solutions.</p>
+                    </div>
+                    <div class="mix-item">
+                        <h3>Price</h3>
+                        <p>We offer competitive pricing that reflects the premium quality of our products while ensuring accessibility. Discounts, such as our -18% offer on select items, provide added value to our customers.</p>
+                    </div>
+                    <div class="mix-item">
+                        <h3>Place</h3>
+                        <p>VitaGlow products are available through our user-friendly online store, with free shipping on orders over $150,000 and efficient delivery within 2-3 business days to ensure a seamless customer experience.</p>
+                    </div>
+                    <div class="mix-item">
+                        <h3>Promotion</h3>
+                        <p>We engage our audience through targeted digital campaigns, social media, and partnerships with eco-conscious influencers, emphasizing our commitment to sustainability and transparency in all communications.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+             <h2>International Focus</h2>
+                <div class="international-section">
+                    <div class="focus-item">
+                        <h3>Target Market</h3>
+                        <p>Expansion to Mexico and Peru within 18 months, targeting eco-conscious youth.</p>
+                    </div>
+                    <div class="focus-item">
+                        <h3>Export Strategy</h3>
+                        <p>Digital products (care guides) and physical products (creams, serums) via e-commerce, with DHL for deliveries.</p>
+                    </div>
+                    <div class="focus-item">
+                        <h3>Cultural Adaptation</h3>
+                        <p>Bilingual labels (Spanish/English), social media campaigns with region-specific hashtags.</p>
+                    </div>
+                    <div class="focus-item">
+                        <h3>Competitive Advantage</h3>
+                        <p>Colombian ingredients (aloe vera, rosehip) highlighting the country’s biodiversity.</p>
+                    </div>
+                </div>
+
+                <p>By integrating the 3C analysis with our Marketing Mix and International Focus, VitaGlow ensures a strategic approach that not only meets but exceeds customer expectations, delivering innovative, sustainable beauty solutions tailored to your needs.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 VitaGlow. Todos los derechos reservados. | Belleza Sostenible para una Nueva Generación</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+                <a href="legal/terms.html" style="color: #feca57; text-decoration: none;">Términos y Condiciones</a> |
+                <a href="legal/privacy.html" style="color: #feca57; text-decoration: none;">Política de Privacidad</a> |
+                <a href="legal/returns.html" style="color: #feca57; text-decoration: none;">Política de Devoluciones</a> |
+                <a href="legal/cookies.html" style="color: #feca57; text-decoration: none;">Aviso de Cookies</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.body.style.paddingTop = `${headerHeight}px`;
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-menu li a');
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href').split('/').pop();
+                if (linkPage === currentPage) { link.classList.add('active'); }
+            });
+            const sectionsToObserve = document.querySelectorAll('.fade-in-section');
+            if (sectionsToObserve.length > 0) {
+                const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+                const observer = new IntersectionObserver(function(entries, observerInstance) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observerInstance.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                sectionsToObserve.forEach(section => observer.observe(section));
+            }
+        });
+    </script>
+</body>
+</html>

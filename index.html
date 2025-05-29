@@ -1,0 +1,166 @@
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+
+            // Convert sheet to JSON to filter blank rows
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+            // Filter out blank rows (rows where all cells are empty, null, or undefined)
+            var filteredData = jsonData.filter(row => row.some(filledCell));
+
+            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+            var headerRowIndex = filteredData.findIndex((row, index) =>
+              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+            );
+            // Fallback
+            if (headerRowIndex === -1 || headerRowIndex > 25) {
+              headerRowIndex = 0;
+            }
+
+            // Convert filtered JSON back to CSV
+            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+            return csv;
+        } catch (e) {
+            console.error(e);
+            return "";
+        }
+    }
+    return gk_fileData[filename] || "";
+    }
+    </script><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitaGlow - Belleza Sostenible y Natural | Inicio</title>
+<meta name="description" content="VitaGlow - Marca innovadora de belleza y cuidado personal sostenible. Descubre nuestros productos eco-conscientes y cruelty-free para Gen Z y Millennials.">
+<meta name="keywords" content="belleza sostenible, cuidado natural de la piel, cosmética ecológica, productos veganos, skincare Colombia, belleza consciente, maquillaje ecológico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <div class="logo">VitaGlow</div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="strategy.html">Strategy</a></li>
+                <li><a href="seo-sem.html">SEO & SEM</a></li>
+                <li><a href="ux-cx.html">UX & CX</a></li>
+                <li><a href="3c-mix.html">3C & Mix</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero-section fade-in-section">
+        <h1 class="hero-title">VitaGlow</h1>
+        <p class="hero-subtitle">
+           Sustainable Beauty That Empowers Your Natural Glow
+        </p>
+        <p > <img src="logo .png" style="width: 150px; height: 150px;" alt="VitaGlow Logo">
+    </section>
+
+    <section class="content-section fade-in-section" id="products">
+        <h2 class="section-title">Our Products</h2>
+        <div class="section-description">
+            <p>Discover our line of sustainable, high-performance products, designed to enhance your natural beauty while protecting the planet.</p>
+        </div>
+        <div class="values-grid fade-in-section">
+            <a href="product1.html">
+                <div class="value-card">
+                    <div class="value-icon">
+                      <img src="https://cdn-icons-png.flaticon.com/512/1053/1053128.png" alt="Sérum Facial Hidratante">
+                    </div>
+                    <h3 class="value-title">Moisturizing facial serum</h3>
+                    <p class="value-description">A cruelty-free serum with natural ingredients that deeply hydrates and leaves your skin radiant.</p>
+                </div>
+            </a>
+            <a href="product2.html">
+            <div class="value-card">
+                <div class="value-icon"><img src="https://cdn-icons-png.flaticon.com/512/3588/3588500.png" alt="Hidratante Eco-Friendly"></div>
+                <h3 class="value-title">Eco-Friendly Facial Moisturizer</h3>
+                <p class="value-description">Moisturizing cream in sustainable packaging, combining science and nature for healthy skin.</p>
+            </div>
+             </a>
+            <a href="product3.html">
+            <div class="value-card">
+                <div class="value-icon"><img src="https://cdn-icons-png.flaticon.com/512/3588/3588423.png" alt="Bálsamo Labial Vegano"></div>
+                <h3 class="value-title">Vegan lip balm </h3>
+                <p class="value-description">Inclusive and cruelty-free lip balm, with ethical ingredients for soft and smooth lips and </p> 
+                <p class="value-description"> protected.</p>
+            </div>
+            </a>
+        </div>
+        
+    </section>
+
+    <section class="content-section fade-in-section" id="company-info">
+        <h2 class="section-title">Who Are We?</h2>
+        <div class="section-description">
+            <p>VitaGlow is an innovative beauty and personal care brand dedicated to empowering Gen Z and Millennials with sustainable, high-performance products. Our mission is to enhance natural beauty through ethical sourcing, eco-friendly packaging, and cruelty-free formulations. We prioritize transparency, inclusivity, and environmental responsibility, offering a unique blend of science and nature for radiant, healthy-looking skin. VitaGlow redefines beauty by caring for both people and the planet.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>© 2025 VitaGlow. Todos los derechos reservados. | Belleza Sostenible para una Nueva Generación</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+            <a href="https://creativosocialmedia.my.canva.site/vitaglow-terminos" style="color: #feca57; text-decoration: none;">Términos y Condiciones</a> |
+            <a href="https://creativosocialmedia.my.canva.site/vitaglow-terminos" style="color: #feca57; text-decoration: none;">Política de Privacidad</a> |
+            <a href="https://creativosocialmedia.my.canva.site/vitaglow-terminos" style="color: #feca57; text-decoration: none;">Política de Devoluciones</a> |
+            <a href="https://creativosocialmedia.my.canva.site/vitaglow-terminos" style="color: #feca57; text-decoration: none;">Aviso de Cookies</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header');
+        if (header) {
+            const headerHeight = header.offsetHeight;
+            document.body.style.paddingTop = `${headerHeight}px`;
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href').split('/').pop();
+            if (linkPage === currentPage) { link.classList.add('active'); }
+        });
+        const sectionsToObserve = document.querySelectorAll('.fade-in-section');
+        if (sectionsToObserve.length > 0) {
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(function(entries, observerInstance) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observerInstance.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            sectionsToObserve.forEach(section => observer.observe(section));
+        }
+    });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9470b5227ff588f6',t:'MTc0ODQ2NjI5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

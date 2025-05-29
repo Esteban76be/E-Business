@@ -1,0 +1,143 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaGlow - Visibilidad Online: SEO y SEM</title>
+    <meta name="description" content="Conoce las estrategias de SEO y SEM de VitaGlow para conectar con la Generación Z y Millennials en Colombia.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">VitaGlow</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="strategy.html">Strategy</a></li>
+                    <li><a href="seo-sem.html">SEO & SEM</a></li>
+                    <li><a href="ux-cx.html">UX & CX</a></li>
+                    <li><a href="3c-mix.html">3C & Mix</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+   <main class="container">
+    <section class="content-section fade-in-section" id="seo-sem">
+        <h2 class="section-title">Online Visibility: SEO and SEM</h2>
+        <div class="section-description">
+            <p>To ensure you can easily find VitaGlow and connect with our philosophy, we implement SEO and SEM strategies focused on Colombia’s young, eco-conscious audience.</p>
+        </div>
+
+        <h3 class="subsection-title">Strategic Keywords</h3>
+        <p class="list-intro">We focus on terms that reflect your searches and our values: <em>sustainable beauty, natural skincare, eco-friendly cosmetics, vegan products, skincare Colombia, conscious beauty, eco-friendly makeup.</em></p>
+
+        <h3 class="subsection-title">SEO Actions (On-Page)</h3>
+        <ul>
+            <li>Optimization of titles and meta descriptions with our keywords.</li>
+            <li>Creation of a blog with practical tips on sustainable beauty and wellness.</li>
+            <li>Use of compressed and properly labeled images for fast and accessible loading.</li>
+            <li>Development of a responsive, intuitive, and user-friendly web structure for all devices.</li>
+            <li>Detailed, transparent, and optimized product pages for easy understanding.</li>
+        </ul>
+
+        <h3 class="subsection-title">SEM Strategies</h3>
+        <ul>
+            <li>Targeted campaigns on Google Ads and Meta Ads (Instagram/Facebook).</li>
+            <li>Segmentation by key interests: sustainability, natural beauty, veganism, conscious personal care.</li>
+            <li>Remarketing ads to reconnect with interested visitors to our site.</li>
+            <li>Use of engaging visual formats and short videos to capture attention and convey our message.</li>
+        </ul>
+    </section>
+</main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 VitaGlow. Todos los derechos reservados. | Belleza Sostenible para una Nueva Generación</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+                <a href="legal/terms.html" style="color: #feca57; text-decoration: none;">Términos y Condiciones</a> |
+                <a href="legal/privacy.html" style="color: #feca57; text-decoration: none;">Política de Privacidad</a> |
+                <a href="legal/returns.html" style="color: #feca57; text-decoration: none;">Política de Devoluciones</a> |
+                <a href="legal/cookies.html" style="color: #feca57; text-decoration: none;">Aviso de Cookies</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.body.style.paddingTop = `${headerHeight}px`;
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-menu li a');
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href').split('/').pop();
+                if (linkPage === currentPage) { link.classList.add('active'); }
+            });
+            const sectionsToObserve = document.querySelectorAll('.fade-in-section');
+            if (sectionsToObserve.length > 0) {
+                const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+                const observer = new IntersectionObserver(function(entries, observerInstance) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observerInstance.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                sectionsToObserve.forEach(section => observer.observe(section));
+            }
+        });
+    </script>
+</body>
+</html>

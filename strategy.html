@@ -1,0 +1,166 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaGlow - Nuestra Estrategia</title>
+    <meta name="description" content="Conoce la estrategia de VitaGlow para posicionarse como líder en belleza sostenible en Colombia.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">VitaGlow</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="strategy.html">Strategy</a></li>
+                    <li><a href="seo-sem.html">SEO & SEM</a></li>
+                    <li><a href="ux-cx.html">UX & CX</a></li>
+                    <li><a href="3c-mix.html">3C & Mix</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="content-section fade-in-section" id="strategy">
+            <h2 class="section-title">Our Strategy</h2>
+            <div class="section-description">
+                <p>At VitaGlow, we've charted a clear path to becoming a benchmark for sustainable beauty in Colombia, connecting deeply with Generation Z and Millennials.</p>
+            </div>
+
+            <h3 class="subsection-title">Main Objective</h3>
+            <p class="list-intro">Position VitaGlow as the leading sustainable beauty brand among Generation Z and Millennials in Colombia within 12 months.</p>
+
+            <h3 class="subsection-title">Key Activities</h3>
+            <ul>
+                <li>Launch our intuitive and engaging e-commerce platform.</li>
+                <li>Develop influential social media campaigns with content creators aligned with our values.</li>
+                <li>Launch a line of innovative, high-quality eco-friendly products.</li>
+                <li>Implement loyalty and referral programs to build a strong community.</li>
+                <li>Establish alliances with organizations focused on sustainability.</li>
+            </ul>
+
+            <h3 class="subsection-title">Schedule</h3>
+            <p class="list-intro">Our plan spans 12 months, with quarterly milestones to ensure progress and continued adaptation.</p>
+
+            <h3 class="subsection-title">Success Indicators</h3>
+            <ul>
+                <li>Monthly sales growth.</li>
+                <li>Increased web traffic and conversion rates.</li>
+                <li>Increase in social media engagement and number of followers.</li>
+                <li>High customer retention rate.</li>
+            </ul>
+
+            <h3 class="subsection-title">Critical Success Factors</h3>
+            <ul>
+                <li>Constant quality and innovation in our products.</li>
+                <li>Effective and authentic digital marketing.</li>
+                <li>Exceptional customer experience at every touchpoint.</li>
+            </ul>
+
+            <h3 class="subsection-title">Potential Risks</h3>
+            <ul>
+                <li>Low initial market adoption.</li>
+                <li>Supply chain disruptions.</li>
+                <li>Negative customer reviews.</li>
+            </ul>
+
+            <h3 class="subsection-title">Mitigation Measures</h3>
+            <ul>
+                <li>Conduct ongoing market research and pilot testing.</li>
+                <li>Diversify suppliers and establish proactive and efficient customer support.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 VitaGlow. Todos los derechos reservados. | Belleza Sostenible para una Nueva Generación</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+                <a href="legal/terms.html" style="color: #feca57; text-decoration: none;">Términos y Condiciones</a> |
+                <a href="legal/privacy.html" style="color: #feca57; text-decoration: none;">Política de Privacidad</a> |
+                <a href="legal/returns.html" style="color: #feca57; text-decoration: none;">Política de Devoluciones</a> |
+                <a href="legal/cookies.html" style="color: #feca57; text-decoration: none;">Aviso de Cookies</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.body.style.paddingTop = `${headerHeight}px`;
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-menu li a');
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href').split('/').pop();
+                if (linkPage === currentPage) { link.classList.add('active'); }
+            });
+            const sectionsToObserve = document.querySelectorAll('.fade-in-section');
+            if (sectionsToObserve.length > 0) {
+                const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+                const observer = new IntersectionObserver(function(entries, observerInstance) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observerInstance.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                sectionsToObserve.forEach(section => observer.observe(section));
+            }
+        });
+    </script>
+</body>
+</html>
